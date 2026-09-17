@@ -1,0 +1,68 @@
+long solve(int pos, boolean tight, int sum) {
+
+    // All digits processed
+    if (pos == digits.length()) {
+        return sum == K ? 1 : 0;
+    }
+
+    // Maximum digit allowed
+    int limit = tight ? digits.charAt(pos) - '0' : 9;
+
+    long ans = 0;
+
+    // Try every possible digit
+    for (int d = 0; d <= limit; d++) {
+
+        boolean newTight =
+            tight && (d == digits.charAt(pos) - '0');
+
+        ans += solve(
+            pos + 1,
+            newTight,
+            sum + d
+        );
+    }
+
+    return ans;
+}
+
+
+long dfs(int pos, int tight, int started, ...) {
+
+    // Base case
+    if (pos == digits.length) {
+        return valid(...) ? 1 : 0;
+    }
+
+    // If already computed and not tight
+    if (tight == 0 && memo[pos][started][...] != -1) {
+        return memo[pos][started][...];
+    }
+
+    int limit = (tight == 1) ? digits[pos] : 9;
+
+    long ans = 0;
+
+    for (int digit = 0; digit <= limit; digit++) {
+
+        int newTight =
+            (tight == 1 && digit == digits[pos]) ? 1 : 0;
+
+        int newStarted =
+            (started == 1 || digit != 0) ? 1 : 0;
+
+        ans += dfs(
+            pos + 1,
+            newTight,
+            newStarted,
+            ...
+        );
+    }
+
+    // Memoize
+    if (tight == 0) {
+        memo[pos][started][...] = ans;
+    }
+
+    return ans;
+}
